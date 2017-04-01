@@ -1,27 +1,28 @@
 {
   "name": "sails-hook-datatable-2",
   "version": "1.0.2",
-  "description": "A sails hook for working with jquery datatable",
+  "description": "A sails hook for working with datatable",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Robophil/sails-hook-datatable.git"
+    "url": "git@github.com:afidosstar/sails-hook-datatable.git"
   },
   "keywords": [
     "sails",
     "sails-hook",
     "datatable",
-    "jquery datatable"
+    "jquery datatable",
+    "sails datatable"
   ],
-  "author": "Philip Oghenerobo Balogun",
+  "author": "AYEDOUN Dossou Fiacre (Philip Oghenerobo Balogun)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Robophil/sails-hook-datatable/issues"
+    "url": "https://github.com/afidosstar/sails-hook-datatable/issues"
   },
-  "homepage": "https://github.com/Robophil/sails-hook-datatable#readme",
+  "homepage": "https://github.com/afidosstar/sails-hook-datatable/blob/master/README.md",
   "sails": {
     "isHook": true
   },
