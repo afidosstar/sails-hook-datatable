@@ -3,7 +3,7 @@ A sails hook for working with Jquery datatables.
 
 ### Install
 ```bash
-npm i sails-hook-datatable --save
+npm i sails-hook-datatable-2 --save
 ```
 
 ### Support
