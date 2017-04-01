@@ -46,53 +46,15 @@ module.exports.getData = function (model, options) {
 
 
 
-/*
-   //build where criteria
-   var where = [], whereQuery = { or: [] }, select = [] , order = []
-
-   if (_options.columns.length) {
-   if (_options.columns[0].data == 0) {//type array
-   /!**
-   * sails never responds with an array of literals or primitives like [["boy","foo"], ["girl","bar"]]
-   * do set your column.data attribute from your datatable config
-   *!/
-   } else {//type Object
-   _options.columns.forEach((column, index) => {
-   if (column.searchable) {
-   if (column.data.indexOf('.') > -1) {//accesing object attribute for value
-   var col = column.data.substr(0, column.data.indexOf('.'))
-   var filter = {}
-   filter[col] = {
-   'contains': _options.search.value
-   }
-   select.push(col)
-   where.push(filter)
-   } else {
-   var filter = {}
-   filter[column.data] = {
-   'contains': _options.search.value
-   }
-   select.push(column.data)
-   where.push(filter)
-   }
-   }
-   })
-   }
-   whereQuery = { or : where }
-   } else {
-   whereQuery = {}
-   }
-*/
 
   var where = [], whereQuery = { or: []}, select = [] , order = []
 
   _options.columns.forEach(function (column, index) {
     if (column.searchable) {
       if (column.data) {
-        var property = column.data.split('.').shift()
+        var property = column.data.split('.',2).shift()
 
         if (!property) return null
-
         select.push(property)
 
         if ( column.search.value) {
@@ -107,8 +69,7 @@ module.exports.getData = function (model, options) {
       }
     }
   })
-  if(whereQuery.or.length < 1) delete whereQuery.or
-  if(select.length < 1) select: "*"
+
 
 
   _options.order.forEach(function (_order, index) {
@@ -124,7 +85,8 @@ module.exports.getData = function (model, options) {
     limit: +_options.length,
     sort: order
   }
-  //find the databased on the query and total items in the database data[0] and data[1] repectively
+
+  // find the databased on the query and total items in the database data[0] and data[1] repectively
   return Promise.all([MODEL.find(query), MODEL.count()]).then(data => {
     _response.recordsTotal = data[1]//no of data stored
     _response.recordsFiltered = data[0].length//no of data after applying filter
