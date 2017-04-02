@@ -47,7 +47,7 @@ module.exports.getData = function (model, options) {
 
 
 
-  var where = [], whereQuery = { or: []}, select = [] , order = []
+  var where = [], whereQuery = { or: []}, select = [] , order = {}
 
   _options.columns.forEach(function (column, index) {
     if (column.searchable) {
@@ -73,8 +73,9 @@ module.exports.getData = function (model, options) {
 
 
   _options.order.forEach(function (_order, index) {
-    if (_options.columns[_order.column].orderable) {
-      order.push(_options.columns[_order.column].data+ " " +_order.dir.toUpperCase())
+    if (_options.columns[_order.column].orderable && _options.columns[_order.column].data) {
+      var property = _options.columns[_order.column].data.split('.',2).shift()
+      order[property] = _order.dir.toUpperCase()==='DESC' ? 0 : 1
     }
   })
 
