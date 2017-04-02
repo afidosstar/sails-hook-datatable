@@ -51,7 +51,10 @@ module.exports.getData = function (model, options) {
 
   //it is for parse a boolean string
   let parseBool = (value) => {
-    switch (value.toLowerCase()){
+    if(typeof value === "string"){
+      value = value.toLowerCase()
+    }
+    switch (value){
       case 'false':
         return false
       case 'true':
