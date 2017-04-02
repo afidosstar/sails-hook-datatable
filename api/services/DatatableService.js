@@ -49,21 +49,33 @@ module.exports.getData = function (model, options) {
 
   var where = [], whereQuery = { or: []}, select = [] , order = {}
 
+  //it is for parse a boolean string
+  let parseBool = (value) => {
+    switch (value.toLowerCase()){
+      case 'false':
+        return false
+      case 'true':
+        return true
+      default:
+        return value
+    }
+  }
+
   _options.columns.forEach(function (column, index) {
-    if (column.searchable) {
+    if (parseBool(column.searchable)) {
       if (column.data) {
         var property = column.data.split('.',2).shift()
 
         if (!property) return null
         select.push(property)
 
-        if ( column.search.value) {
-          whereQuery[property] = column.search.regex ? { contains : column.search.value } :  column.search.value
+        if (column.search.value) {
+          whereQuery[property] = parseBool(column.search.regex) ? { contains : column.search.value } :  column.search.value
         }
 
         if (_options.search.value){
           var or = {}
-          or[property] = _options.search.regex ? { contains : _options.search.value } :  _options.search.value
+          or[property] = parseBool(_options.search.regex) ? { contains : _options.search.value } :  _options.search.value
           whereQuery.or.push(or)
         }
       }
@@ -73,7 +85,7 @@ module.exports.getData = function (model, options) {
 
 
   _options.order.forEach(function (_order, index) {
-    if (_options.columns[_order.column].orderable && _options.columns[_order.column].data) {
+    if (parseBool(_options.columns[_order.column].orderable) && _options.columns[_order.column].data) {
       var property = _options.columns[_order.column].data.split('.',2).shift()
       order[property] = _order.dir.toUpperCase()==='DESC' ? 0 : 1
     }
