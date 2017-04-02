@@ -62,12 +62,9 @@ module.exports.getData = function (model, options) {
   }
 
   _options.columns.forEach(function (column, index) {
-    if (parseBool(column.searchable)) {
-      if (column.data) {
-        var property = column.data.split('.',2).shift()
-
-        if (!property) return null
-        select.push(property)
+    if (column.data) {
+      var property = column.data.split('.',2).shift()
+      if (parseBool(column.searchable)) {
 
         if (column.search.value) {
           whereQuery[property] = parseBool(column.search.regex) ? { contains : column.search.value } :  column.search.value
@@ -79,6 +76,8 @@ module.exports.getData = function (model, options) {
           whereQuery.or.push(or)
         }
       }
+      if (!property) return null
+      select.push(property)
     }
   })
 
@@ -98,6 +97,10 @@ module.exports.getData = function (model, options) {
     limit: +_options.length,
     sort: order
   }
+
+  if(query.select.length < 1) delete  query.select
+  if(query.where.or.length < 1) delete  query.where.or
+  //if(query.where < 1) delete  query.where.or
 
   // find the databased on the query and total items in the database data[0] and data[1] repectively
   return Promise.all([MODEL.find(query), MODEL.count()]).then(data => {
